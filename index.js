@@ -8,9 +8,10 @@ const { CosmosClient } = require("@azure/cosmos");
 const { AzureOpenAI } = require("openai");
 
 const deployment = process.env.AZURE_OPENAI_DEPLOYMENT_NAME; // model = "deployment name".
-const apiVersion = "2024-10-21";
+const apiVersion = process.env.AZURE_OPENAI_API_VERSION;
 const ai_key = process.env.AZURE_OPENAI_KEY;
 const ai_endpoint = process.env.AZURE_OPENAI_ENDPOINT;
+const ai_system_prompt = process.env.AZURE_OPENAI_CHAT_SYSTEM_PROMPT
 const openaiClient = new AzureOpenAI({
   apiKey: ai_key,
   deployment: deployment,
@@ -281,7 +282,7 @@ async function handleEvent(event) {
   // https://learn.microsoft.com/en-us/javascript/api/overview/azure/openai-readme?view=azure-node-preview
   // モデルに渡すメッセージ情報の作成
   let messages = [
-    { role: "system", content: "あなたは日本語を話すAIアシスタントです。できるだけ簡潔に返答を返します。" },
+    { role: "system", content: ai_system_prompt },
   ];
 
   let lastHistory = getChatHistory(userId);
