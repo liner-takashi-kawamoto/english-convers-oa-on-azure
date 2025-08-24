@@ -298,8 +298,6 @@ async function handleEvent(event) {
 
   const events = await openaiClient.chat.completions.create({
     messages: messages,
-    model: "",
-    max_tokens: 128,
     stream: true,
   });
 
